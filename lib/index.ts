@@ -54,6 +54,30 @@ export class WiremockClient {
         return this.deleteMapping('');
     }
 
+    getRequestJournal(): Promise<any> {
+        this.options.method = 'GET';
+        this.options.path = '/__admin/requests';
+        return this.performRequest();
+    }
+
+    resetRequestJournal(): Promise<void> {
+        this.options.method = 'DELETE';
+        this.options.path = '/__admin/requests';
+        return this.performRequest();
+    }
+
+    getRequestCount(query: any): Promise<any> {
+        this.options.method = 'POST';
+        this.options.path = '/__admin/requests/count';
+        return this.performRequest(JSON.stringify(query));
+    }
+
+    findRequest(query: any): Promise<any> {
+        this.options.method = 'POST';
+        this.options.path = '/__admin/requests/find';
+        return this.performRequest(JSON.stringify(query));
+    }
+
     private performRequest(body: string = null): Promise<any> {
         return new Promise((resolve, reject) => {
             let responseBody: string = '';
@@ -66,6 +90,9 @@ export class WiremockClient {
 
                 res.on('end', () => {
                     if (res.statusCode < 200 || res.statusCode > 299) {
+                        if (res.statusCode === 422) {
+                            reject(JSON.parse(responseBody));
+                        }
                         reject(`Wiremock didn't return 2xx code\nStatus: ${res.statusCode} - ${res.statusMessage}`);
                     } else {
                         try {

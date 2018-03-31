@@ -19,5 +19,3 @@ const sampleMapping = {
 wiremockClient.addMapping(sampleMapping);
 
 ```
-
-# TODO's
