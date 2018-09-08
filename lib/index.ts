@@ -1,4 +1,4 @@
-import {URL} from 'url';
+import { URL } from 'url';
 import * as http from 'http';
 
 export class WiremockClient {
