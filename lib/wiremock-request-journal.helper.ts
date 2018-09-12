@@ -1,5 +1,8 @@
 import { RequestPattern, WiremockHelper } from './wiremock.helper';
 
+/**
+ * Helper for interacting with the request journal of Wiremock (if enabled)
+ */
 export class WiremockRequestJournalHelper extends WiremockHelper {
 
   private readonly browserName: string;
@@ -20,6 +23,9 @@ export class WiremockRequestJournalHelper extends WiremockHelper {
     };
   }
 
+  /**
+   * Get all the received requests
+   */
   getRequestJournal(): Promise<any> {
     return this.performRequest({
       method: 'GET',
@@ -27,6 +33,9 @@ export class WiremockRequestJournalHelper extends WiremockHelper {
     });
   }
 
+  /**
+   * Remove all the received requests (log) from Wiremock
+   */
   resetRequestJournal(): Promise<void> {
     return this.performRequest({
       method: 'DELETE',
@@ -34,6 +43,10 @@ export class WiremockRequestJournalHelper extends WiremockHelper {
     });
   }
 
+  /**
+   * Get the number of received requests given the specific query parameters
+   * @param query   The query as specified in http://wiremock.org/docs/api/
+   */
   getRequestCount(query: any): Promise<any> {
     return this.performRequest({
       method: 'POST',

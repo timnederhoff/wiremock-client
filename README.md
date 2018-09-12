@@ -1,10 +1,11 @@
 # wiremock client
+This library can be used if a Wiremock instance is running, to interact like the actions given in the api http://wiremock.org/docs/api/
 
 # Usage
 ```typescript
-import {WiremockClient} from 'wiremock-client';
+import { WiremockHelper } from 'wiremock-client';
 
-const wiremockClient = new WiremockClient();
+const wiremockClient = new WiremockHelper();
 
 const sampleMapping = {
     request: {

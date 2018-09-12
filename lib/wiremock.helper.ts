@@ -3,6 +3,9 @@ import { request, RequestOptions } from 'http';
 import * as path from 'path';
 import { parse } from 'url';
 
+/**
+ * Helper to interact with Wiremock. Specifications of actions can be found at http://wiremock.org/docs/api/
+ */
 export class WiremockHelper {
 
   private readonly defaultOptions: RequestOptions;
@@ -16,6 +19,9 @@ export class WiremockHelper {
     };
   }
 
+  /**
+   * Obtain all scenarios from the stub
+   */
   getScenarios(): Promise<ScenarioList> {
     return this.performRequest({
       method: 'GET',
@@ -23,6 +29,9 @@ export class WiremockHelper {
     });
   }
 
+  /**
+   * Reset all scenarios to the start state
+   */
   resetScenarios(): Promise<StubMapping[]> {
     return this.performRequest({
       method: 'POST',
@@ -30,6 +39,11 @@ export class WiremockHelper {
     });
   }
 
+  /**
+   * Add a mapping to the stub. Note that the added mappings should be saved in order to persist them even after
+   * resetting the stub
+   * @param mapping   The mapping in the StubMapping type
+   */
   addMapping(mapping: StubMapping): Promise<StubMapping> {
     return this.performRequest({
       method: 'POST',
@@ -37,6 +51,10 @@ export class WiremockHelper {
     }, JSON.stringify(mapping));
   }
 
+  /**
+   * Method loops over a given dir and picks the *.json files to add them to the stub
+   * @param dir   The directory of the mappings,
+   */
   addMappingsFromDir(dir: string): void {
     fs.readdir(dir, (err, files) => {
       if (err) {
@@ -56,6 +74,9 @@ export class WiremockHelper {
     });
   }
 
+  /**
+   * Obtain all mappings from the stub
+   */
   getMappings(): Promise<ListStubMappingResults> {
     return this.performRequest({
       method: 'GET',
@@ -63,6 +84,10 @@ export class WiremockHelper {
     });
   }
 
+  /**
+   * Get a specific mapping based on the id. The id is returned in the response of addMapping()
+   * @param id  The id in string format
+   */
   getMapping(id: string): Promise<StubMapping> {
     return this.performRequest({
       method: 'GET',
@@ -70,6 +95,10 @@ export class WiremockHelper {
     });
   }
 
+  /**
+   * Delete a mapping based on the id
+   * @param id  The id in string format
+   */
   deleteMapping(id: string): Promise<void> {
     return this.performRequest({
       method: 'DELETE',
@@ -77,6 +106,9 @@ export class WiremockHelper {
     });
   }
 
+  /**
+   * Delete all mappings from the stub
+   */
   deleteAllMappings(): Promise<void> {
     return this.deleteMapping('');
   }
