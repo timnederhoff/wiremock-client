@@ -96,6 +96,47 @@ export class WiremockHelper {
   }
 
   /**
+   * Get all mappings that match the metadata parameter
+   */
+  findByMetadata(metadata: any): Promise<ListStubMappingResults> {
+    return this.performRequest({
+      method: 'POST',
+      path: '/__admin/mappings/find-by-metadata'
+    }, JSON.stringify(metadata));
+  }
+
+  /**
+   * Updates a specific mapping found by id
+   * @param id
+   * @param updatedStubMapping
+   */
+  updateMapping(id: string, updatedStubMapping: StubMapping) {
+    return this.performRequest({
+      method: 'PUT',
+      path: `/__admin/mappings/${id}`
+    }, JSON.stringify(updatedStubMapping));
+  }
+
+  /**
+   * Updates the mapping that matches the metadata given as parameter. note that the metadata must be set again in the
+   * updated version of the stub in order to find it again. If multiple mappings match the metadata query, the first
+   * will be used and a warning will be put out.
+   * @param metadata            The metadata given to find the specific mapping(s)
+   * @param updatedStubMapping  The new value of the mapping. Only the id will not be changed.
+   */
+  updateMappingByMetadata(metadata: any, updatedStubMapping: StubMapping): Promise<void> {
+    return this.findByMetadata(metadata).then(foundMappings => {
+      if (foundMappings.meta.total === 0) {
+        console.error('[WiremockHelper] no stub mappngs found to update based on metadata:\n' + metadata);
+        throw Error('[WiremockHelper] no stub mappngs found to update based on metadata:\n' + metadata);
+      } else if (foundMappings.meta.total > 1) {
+        console.warn('[WiremockHelper] more that 1 mappings found based on metadata:\n' + metadata + '\nUsing the first mapping to update');
+      }
+      return this.updateMapping(foundMappings.mappings[0].id, updatedStubMapping);
+    });
+  }
+
+  /**
    * Delete a mapping based on the id
    * @param id  The id in string format
    */
@@ -111,6 +152,17 @@ export class WiremockHelper {
    */
   deleteAllMappings(): Promise<void> {
     return this.deleteMapping('');
+  }
+
+  /**
+   * Remove the mappings matching the metadata given.
+   * @param metadata  The metadata query to find the mappings
+   */
+  removeByMetadata(metadata: any) {
+    return this.performRequest({
+      method: 'POST',
+      path: '/__admin/mappings/remove-by-metadata'
+    }, JSON.stringify(metadata));
   }
 
   protected performRequest(specificOptions: RequestOptions, body: string = null): Promise<any> {
