@@ -79,7 +79,7 @@ describe('WiremockClient', () => {
         console.log('mapping:', mappings);
       });
     } catch(e) {
-      expect(e).toContain('Unrecognized');
+      expect(e).contains('Unrecognized');
     }
 
   })

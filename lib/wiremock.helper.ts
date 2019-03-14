@@ -10,11 +10,11 @@ export class WiremockHelper {
 
   private readonly defaultOptions: RequestOptions;
 
-  constructor(baseUrl: string = 'http://localhost') {
+  constructor(baseUrl: string = 'http://localhost:8080') {
     const thisBaseUrl = parse(baseUrl);
     this.defaultOptions = {
       hostname: thisBaseUrl.hostname,
-      port: '8080',
+      port: thisBaseUrl.port,
       protocol: thisBaseUrl.protocol
     };
   }
