@@ -7,8 +7,8 @@ export class WiremockRequestJournalHelper extends WiremockHelper {
 
   private readonly browserName: string;
 
-  constructor(browserName?: string) {
-    super();
+  constructor(baseUrl?: string, browserName?: string) {
+    super(baseUrl);
     this.browserName = browserName.charAt(0).toUpperCase() + browserName.toLowerCase().slice(1);
   }
 
