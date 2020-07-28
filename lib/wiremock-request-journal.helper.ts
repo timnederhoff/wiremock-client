@@ -1,4 +1,5 @@
-import { RequestPattern, WiremockHelper } from './wiremock.helper';
+import { RequestPattern } from './wiremock-domain';
+import { WiremockHelper } from './wiremock.helper';
 
 /**
  * Helper for interacting with the request journal of Wiremock (if enabled)
