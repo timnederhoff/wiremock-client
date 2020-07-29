@@ -3,7 +3,7 @@ import {RequestPatternBuilder} from "./request-pattern-builder";
 import {StubMapping} from "../wiremock-domain";
 
 /**
- * The helper class helps to build the {@link StubMapping} for {@link WiremockClient}
+ * The helper class helps to build the {@link StubMapping} for {@link WiremockHelper}
  */
 export class StubMappingBuilder {
 
