@@ -1,6 +1,6 @@
 {
   "name": "wiremock-easy-client",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Wiremock client to manage Wiremock mappings",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
