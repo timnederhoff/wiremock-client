@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "test": "mocha -r ts-node/register lib/*.spec.ts",
+    "test": "mocha -r ts-node/register lib/**/*.spec.ts",
     "build": "tsc"
   },
   "repository": {
@@ -28,6 +28,7 @@
     "@types/mocha": "~5.0.0",
     "@types/node": "^6.14.4",
     "chai": "~4.1.2",
+    "chai-shallow-deep-equal": "^1.4.6",
     "mocha": "~5.0.5",
     "nock": "^9.2.6",
     "ts-node": "~7.0.1",

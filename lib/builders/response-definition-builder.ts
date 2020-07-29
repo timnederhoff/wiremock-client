@@ -9,12 +9,13 @@ export class ResponseDefinitionBuilder {
 
     private responseDefinition: ResponseDefinition;
 
+    private headers = new Map<string, string>();
+    private additionalProxyRequestHeaders = new Map<string, string>();
+
     constructor(status: number, statusMessage?: string) {
         this.responseDefinition = new ResponseDefinition();
         this.responseDefinition.status = status
         this.responseDefinition.statusMessage = statusMessage;
-        this.responseDefinition.headers = new Map<string, Object>();
-        this.responseDefinition.additionalProxyRequestHeaders = new Map<string, Object>();
 
     }
 
@@ -40,8 +41,8 @@ export class ResponseDefinitionBuilder {
         return this;
     }
 
-    withHeader(key: string, value: Object) {
-        this.responseDefinition.headers.set(key, value);
+    withHeader(key: string, value: string) {
+        this.headers.set(key, value);
         return this;
     }
 
@@ -55,8 +56,8 @@ export class ResponseDefinitionBuilder {
         return this;
     }
 
-    withProxyHeader(key: string, value: Object | null) {
-        this.responseDefinition.additionalProxyRequestHeaders.set(key, value);
+    withProxyHeader(key: string, value: string | null) {
+        this.additionalProxyRequestHeaders.set(key, value);
         return this;
     }
 
@@ -83,7 +84,20 @@ export class ResponseDefinitionBuilder {
     }
 
     build() {
+        if (this.headers.size > 0) {
+            this.responseDefinition.headers = this.mapToObj(this.headers);
+        }
+        if (this.additionalProxyRequestHeaders.size > 0) {
+            this.responseDefinition.additionalProxyRequestHeaders = this.mapToObj(this.additionalProxyRequestHeaders);
+        }
         return this.responseDefinition;
+    }
+
+    private mapToObj(map: Map<string, string>){
+        const obj:any = {}
+        for (let [k,v] of map)
+            obj[k] = v
+        return obj
     }
 }
 

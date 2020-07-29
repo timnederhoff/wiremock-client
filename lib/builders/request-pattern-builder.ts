@@ -184,18 +184,18 @@ export function doesNotMatch(notMatches: string) {
     return new MatchExpression(MatchCondition.doesNotMatch, notMatches);
 }
 
-export function absent(expected: string) {
+export function absent() {
     return new MatchExpression(MatchCondition.absent, true,);
 }
 
-export function notAbsent(expected: string) {
+export function notAbsent() {
     return new MatchExpression(MatchCondition.absent, false);
 }
 
 export function bodyEqualToJsonString(jsonString: string,
                                       ignoreArrayOrder = true,
                                       ignoreExtraElements = true): MatchExpression {
-    return bodyEqualToJson(jsonString, ignoreArrayOrder, ignoreExtraElements);
+    return bodyEqualToJson(JSON.parse(jsonString), ignoreArrayOrder, ignoreExtraElements);
 }
 
 export function bodyEqualToJson(json: Object,
@@ -217,15 +217,7 @@ export function bodyMatchesJsonPathExpression(jsonPath: string, matchExpression:
     return prepareMatchExpression(jsonPath, MatchCondition.matchesJsonPath, matchExpression);
 }
 
-export function bodyEqualToXmlString(xmlString: string,
-                                     enablePlaceholders = false,
-                                     placeholderOpeningDelimiterRegex: string = null,
-                                     placeholderClosingDelimiterRegex: string = null,
-                                     exemptedComparisons: string[] = null) {
-    return bodyEqualToXml(xmlString, enablePlaceholders, placeholderOpeningDelimiterRegex, placeholderClosingDelimiterRegex, exemptedComparisons);
-}
-
-export function bodyEqualToXml(xml: Object,
+export function bodyEqualToXmlString(xml: string,
                                enablePlaceholders = false,
                                placeholderOpeningDelimiterRegex: string = null,
                                placeholderClosingDelimiterRegex: string = null,
