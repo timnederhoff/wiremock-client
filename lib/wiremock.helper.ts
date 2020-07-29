@@ -184,8 +184,8 @@ export class WiremockHelper {
           } else {
             try {
               resolve(JSON.parse(responseBody));
-            } finally {
-              resolve(responseBody);
+            } catch(e) {
+                resolve(responseBody);
             }
           }
         });
@@ -195,7 +195,7 @@ export class WiremockHelper {
         reject('[WiremockHelper] HTTP call to Wiremock failed!\n' + err);
       });
 
-      if (allOptions.method === 'POST' && body != null) {
+      if ((allOptions.method === 'POST' || allOptions.method === 'PUT' || allOptions.method === 'PATCH') && body != null) {
         req.write(body);
       }
       req.end();
