@@ -40,7 +40,7 @@ const allScenarios = {
   ]
 };
 
-describe('WiremockClient', () => {
+describe('WiremockHelper', () => {
 
     it('should add mapping with file reference', () => {
         const filesScope = nock(LOCALHOST_URL)

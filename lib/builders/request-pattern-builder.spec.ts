@@ -66,16 +66,6 @@ describe('RequestPatternBuilder', () => {
         expect(actual).to.shallowDeepEqual(expected);
     });
 
-    it('should map forRequestMatchingUrl properly', () => {
-        const expected = {
-            url: '/sample/path',
-            method: 'ANY'
-        };
-        const actual = forRequestMatchingUrl("/sample/path").build();
-        expect(actual).to.shallowDeepEqual(expected);
-    });
-
-
     it('should map requestFor with urlPathEqualTo properly', () => {
         const expected = {
             urlPath: '/sample/path',
@@ -91,15 +81,6 @@ describe('RequestPatternBuilder', () => {
             method: 'TRACE'
         };
         const actual = requestFor(RequestMethod.TRACE, urlMatchingTo('/your/([a-z]*)\\\\?and=query')).build();
-        expect(actual).to.shallowDeepEqual(expected);
-    });
-
-    it('should map requestFor with urlPathEqualTo properly', () => {
-        const expected = {
-            url: '/sample/path',
-            method: 'TRACE'
-        };
-        const actual = requestFor(RequestMethod.TRACE, urlEqualTo("/sample/path")).build();
         expect(actual).to.shallowDeepEqual(expected);
     });
 
