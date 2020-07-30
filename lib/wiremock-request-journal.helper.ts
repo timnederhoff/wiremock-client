@@ -8,20 +8,18 @@ export class WiremockRequestJournalHelper extends WiremockHelper {
 
     private readonly browserName: string;
 
-    constructor(baseUrl?: string, browserName?: string) {
+    constructor(baseUrl?: string, browserName:string = "") {
         super(baseUrl);
         this.browserName = browserName.charAt(0).toUpperCase() + browserName.toLowerCase().slice(1);
     }
 
     private addBrowserHeader(query: RequestPattern): RequestPattern {
-        return {
-            ...query,
-            headers: {
-                'User-Agent': {
-                    contains: this.browserName
-                }
-            }
-        };
+        if (this.browserName !== "") {
+            query.headers['User-Agent'] = {
+                contains: this.browserName
+            };
+        }
+        return query;
     }
 
     /**
@@ -54,7 +52,7 @@ export class WiremockRequestJournalHelper extends WiremockHelper {
         return super.performRequest({
             method: 'POST',
             path: '/__admin/requests/count'
-        }, JSON.stringify(query))
+        }, JSON.stringify(this.addBrowserHeader(query)))
             .catch(e => {
                 console.warn("Verification fallback to 0. %s", e);
                 return {count: 0};
