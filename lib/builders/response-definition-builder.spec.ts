@@ -7,8 +7,7 @@ import {
     forEmptyResponseFault,
     forGenerateRandomDateAndCloseFault,
     forMalformedResponseChunkFault,
-    responseFor,
-    ResponseDefinitionBuilder
+    responseFor
 } from './response-definition-builder'
 
 
@@ -112,7 +111,7 @@ describe('ResponseDefinitionBuilder', () => {
             "status": 200,
             "statusMessage": "OK"
         };
-        const actual = new ResponseDefinitionBuilder(200, "OK")
+        const actual = responseFor(200, "OK")
             .withBody('{"greeting": "Hello world."}')
             .build();
         expect(actual).to.shallowDeepEqual(expected);
