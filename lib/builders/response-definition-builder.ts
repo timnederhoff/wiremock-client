@@ -2,7 +2,7 @@ import {Fault, ResponseDefinition} from "../wiremock-domain";
 
 /**
  * The helper class for building the Wiremock response definitions.
- * 
+ *
  * @see ResponseDefinition
  */
 export class ResponseDefinitionBuilder {
@@ -22,7 +22,7 @@ export class ResponseDefinitionBuilder {
     withBody(body: string) {
         this.clearBody();
         if (this.isJson(body)) {
-            this.responseDefinition.jsonBody = body;
+            this.responseDefinition.jsonBody = JSON.parse(body);
         } else {
             this.responseDefinition.body = body;
         }
@@ -103,7 +103,7 @@ export class ResponseDefinitionBuilder {
 
 /**
  * Creates the response builder for <b>ok</b> response
- * 
+ *
  * @param body the optional body content
  */
 export function forOkResponse(body?: string) {
@@ -128,7 +128,7 @@ export function forErrorResponse(body?: string) {
 
 /**
  * Creates the response builder for provided parameters
- * 
+ *
  * @param status the HTTP status code
  * @param statusMessage the HTTP status message
  * @param body the optional body content

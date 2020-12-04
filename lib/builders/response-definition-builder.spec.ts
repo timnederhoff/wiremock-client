@@ -7,7 +7,8 @@ import {
     forEmptyResponseFault,
     forGenerateRandomDateAndCloseFault,
     forMalformedResponseChunkFault,
-    responseFor
+    responseFor,
+    ResponseDefinitionBuilder
 } from './response-definition-builder'
 
 
@@ -99,6 +100,20 @@ describe('ResponseDefinitionBuilder', () => {
             .withProxy("http://someProxyUrl.path")
             .withDelay(100)
             .withProxyHeader("someProxyHeader", "someProxyHeader-xxx")
+            .build();
+        expect(actual).to.shallowDeepEqual(expected);
+    });
+
+    it('should map custom request with jsonBody properly', () => {
+        const expected = {
+            "jsonBody": {
+                "greeting": "Hello world."
+            },
+            "status": 200,
+            "statusMessage": "OK"
+        };
+        const actual = new ResponseDefinitionBuilder(200, "OK")
+            .withBody('{"greeting": "Hello world."}')
             .build();
         expect(actual).to.shallowDeepEqual(expected);
     });
