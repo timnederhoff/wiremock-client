@@ -103,5 +103,19 @@ describe('ResponseDefinitionBuilder', () => {
         expect(actual).to.shallowDeepEqual(expected);
     });
 
+    it('should map custom request with jsonBody properly', () => {
+        const expected = {
+            "jsonBody": {
+                "greeting": "Hello world."
+            },
+            "status": 200,
+            "statusMessage": "OK"
+        };
+        const actual = responseFor(200, "OK")
+            .withBody('{"greeting": "Hello world."}')
+            .build();
+        expect(actual).to.shallowDeepEqual(expected);
+    });
+
 
 });
