@@ -63,7 +63,7 @@ export class WiremockHelper {
      * @see ResponseDefinitionBuilder.withReferredFileBody()
      */
     addMapping(stubMapping: StubMapping, bodyFilesDir = "") {
-        if (this.doesMappingContainFileNameBody(stubMapping)) {
+        if (WiremockHelper.doesMappingContainFileNameBody(stubMapping)) {
             const bodyFileName = stubMapping.response.bodyFileName;
             return this.addFile(bodyFilesDir, bodyFileName)
                 .then(file => {
@@ -184,7 +184,7 @@ export class WiremockHelper {
     deleteMapping(id:string) {
         return this.getMapping(id)
             .then(mapping => {
-                if (this.doesMappingContainFileNameBody(mapping)) {
+                if (WiremockHelper.doesMappingContainFileNameBody(mapping)) {
                     return this.deleteFile(mapping.response.bodyFileName)
                         .then(file => {
                             return this.deleteMappingFromStub(id)
@@ -291,7 +291,7 @@ export class WiremockHelper {
         });
     }
 
-    private doesMappingContainFileNameBody(stubMapping: StubMapping) {
+    private static doesMappingContainFileNameBody(stubMapping: StubMapping) {
         return stubMapping.response !== undefined && stubMapping.response.bodyFileName !== undefined
     }
 
@@ -310,7 +310,7 @@ export class WiremockHelper {
 
                 res.on('end', () => {
                     if (res.statusCode < 200 || res.statusCode > 299) {
-                        reject(`[WiremockHelper] Wiremock didn't return 2xx code\nStatus: ${res.statusCode} - ${res.statusMessage}`);
+                        reject(`[WiremockHelper] Wiremock didn't return 2xx code\n Status: ${res.statusCode} - ${res.statusMessage} for endpoint ${specificOptions.path}`);
                     } else {
                         try {
                             resolve(JSON.parse(responseBody));
