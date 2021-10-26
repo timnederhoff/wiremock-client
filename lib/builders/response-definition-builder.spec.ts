@@ -117,5 +117,19 @@ describe('ResponseDefinitionBuilder', () => {
         expect(actual).to.shallowDeepEqual(expected);
     });
 
-
+    it('should map request with response template transformer', () => {
+        const expected = {
+            "jsonBody": {
+                "greeting": "Hello world."
+            },
+            "status": 200,
+            "statusMessage": "OK",
+            "transformers": ["response-template"]
+        };
+        const actual = responseFor(200, "OK")
+            .withJsonBody({ greeting: "Hello world."})
+            .withResponseTemplateTransformer()
+            .build();
+        expect(actual).to.shallowDeepEqual(expected);
+    });
 });

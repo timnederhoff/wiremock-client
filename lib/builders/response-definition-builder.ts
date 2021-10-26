@@ -21,11 +21,44 @@ export class ResponseDefinitionBuilder {
 
     withBody(body: string) {
         this.clearBody();
-        if (this.isJson(body)) {
+        if (ResponseDefinitionBuilder.isJson(body)) {
             this.responseDefinition.jsonBody = JSON.parse(body);
         } else {
             this.responseDefinition.body = body;
         }
+        return this;
+    }
+
+    withJsonBody(body: any) {
+        this.clearBody();
+        this.responseDefinition.jsonBody = body;
+        return this;
+    }
+
+    withTextBody(body: string) {
+        this.clearBody();
+        this.responseDefinition.body = body;
+        return this;
+    }
+
+    /**
+     * The transformers to be set
+     *
+     * @param transformer
+     */
+    withTransformers(transformer: string[]) {
+        this.responseDefinition.transformers = transformer;
+        return this;
+    }
+
+    /**
+     * Configure the response template transformer
+     * The wiremock has to be executed with <code>-local-response-templating</code> option to activate the transformer
+     *
+     * @see http://wiremock.org/docs/response-templating/
+     */
+    withResponseTemplateTransformer() {
+        this.responseDefinition.transformers = ["response-template"];
         return this;
     }
 
@@ -74,7 +107,7 @@ export class ResponseDefinitionBuilder {
         this.responseDefinition.base64Body = undefined;
     }
 
-    private isJson(str:string) : boolean{
+    private static isJson(str: string): boolean {
         try {
             JSON.parse(str);
         } catch (e) {
@@ -85,17 +118,17 @@ export class ResponseDefinitionBuilder {
 
     build() {
         if (this.headers.size > 0) {
-            this.responseDefinition.headers = this.mapToObj(this.headers);
+            this.responseDefinition.headers = ResponseDefinitionBuilder.mapToObj(this.headers);
         }
         if (this.additionalProxyRequestHeaders.size > 0) {
-            this.responseDefinition.additionalProxyRequestHeaders = this.mapToObj(this.additionalProxyRequestHeaders);
+            this.responseDefinition.additionalProxyRequestHeaders = ResponseDefinitionBuilder.mapToObj(this.additionalProxyRequestHeaders);
         }
         return this.responseDefinition;
     }
 
-    private mapToObj(map: Map<string, string>){
-        const obj:any = {}
-        for (let [k,v] of map)
+    private static mapToObj(map: Map<string, string>) {
+        const obj: any = {}
+        for (let [k, v] of map)
             obj[k] = v
         return obj
     }
@@ -106,14 +139,14 @@ export class ResponseDefinitionBuilder {
  *
  * @param body the optional body content
  */
-export function forOkResponse(body?: string) {
+export function forOkResponse(body?: string): ResponseDefinitionBuilder {
     return responseFor(200, "Ok", body);
 }
 
 /**
  * Creates the response builder for <b>404 Not Found</b> response with no body
  */
-export function forNotFoundResponse() {
+export function forNotFoundResponse(): ResponseDefinitionBuilder {
     return responseFor(404, "Not Found");
 }
 
@@ -122,7 +155,7 @@ export function forNotFoundResponse() {
  *
  * @param body the optional body content
  */
-export function forErrorResponse(body?: string) {
+export function forErrorResponse(body?: string): ResponseDefinitionBuilder {
     return responseFor(500, "Internal Server Error", body);
 }
 
@@ -133,7 +166,7 @@ export function forErrorResponse(body?: string) {
  * @param statusMessage the HTTP status message
  * @param body the optional body content
  */
-export function responseFor(status: number, statusMessage: string, body?: string) {
+export function responseFor(status: number, statusMessage: string, body?: string): ResponseDefinitionBuilder {
     return new ResponseDefinitionBuilder(status, statusMessage)
         .withBody(body);
 }
